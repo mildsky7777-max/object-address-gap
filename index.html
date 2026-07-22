@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>사물주소, 어디까지 쓰이나 — 전국 시군구 활용격차 지도</title>
+<title>사물주소, 부여의 폭은 지역마다 다르다 — 전국 시군구 부여격차 지도</title>
 <style>
 /* Hallmark · pre-emit critique: P5 H5 E4 S5 R4 V5 — warm/approachable civic-wellness tone, distinct from 안전북도's cool report */
 :root{
@@ -11,7 +11,7 @@
   --bg:#f4f6fa; --card:#ffffff; --line:#e4e9f1; --line2:#ccd6e6;
   --ink:#17213a; --ink2:#54607a; --ink3:#94a0b8;   /* deep navy ink — govt trust */
   --brand:#1d5fa8; --brand-deep:#123f75;            /* deep blue — public/official */
-  --r1:#dce7f5; --r2:#a7c4e8; --r3:#6b98d3; --r4:#3968ac; --r5:#183d73; /* sequential blue, deeper=사각지대(활용 적음) */
+  --r1:#dce7f5; --r2:#a7c4e8; --r3:#6b98d3; --r4:#3968ac; --r5:#183d73; /* sequential blue, deeper=저부여(부여 유형 적음) */
   --num:"tnum" 1;
 }
 @media (prefers-color-scheme: dark){
@@ -111,7 +111,7 @@ body{font-family:'Apple SD Gothic Neo','Noto Sans KR',system-ui,sans-serif; back
 .inset svg{width:100%; height:auto; display:block}
 .legend{display:flex; align-items:center; gap:5px; font-size:11.5px; color:var(--ink2); margin-top:14px; flex-wrap:wrap}
 .legend .sw{width:26px; height:11px; border-radius:3px; display:inline-block}
-/* 사각지대 랭킹 카드 */
+/* 저부여 랭킹 카드 */
 .rank{display:flex; align-items:center; gap:13px; padding:12px 8px; border-bottom:1px solid var(--line); cursor:pointer; border-radius:10px; transition:background .12s}
 .rank:hover{background:color-mix(in srgb,var(--brand) 6%,transparent)}
 .rank.on{background:color-mix(in srgb,var(--brand) 13%,transparent)}
@@ -153,8 +153,8 @@ footer ul{padding-left:17px; line-height:1.7}
 <body>
 <div class="wrap">
 <header class="hero">
-  <h1>사물주소 활용격차</h1>
-  <p>제도는 전국에 있지만 지역마다 활용 폭이 4종~26종으로 갈립니다. <span class="muted">2026년 · 전국 39만 건 · 207개 시군구</span></p>
+  <h1>사물주소 부여격차</h1>
+  <p>제도는 전국에 있지만 지역마다 부여 유형 폭이 4종~26종으로 갈립니다. <span class="muted">2026년 · 전국 39만 건 · 207개&nbsp;시군구</span></p>
 </header>
 
 <!-- 전국 뷰 (첫 화면 · 한눈에) -->
@@ -163,8 +163,8 @@ footer ul{padding-left:17px; line-height:1.7}
     <div class="nmap">
       <div class="nkpi" id="nation-kpi"><div class="stats" id="stats"></div></div>
       <div class="nmapmain">
-        <h2>전국 시군구 사물주소 활용지도</h2>
-        <div class="sub">색이 진할수록 활용 유형이 적은 사각지대 · <b style="color:var(--brand-deep)">지역을 클릭하면 그 시도를 확대</b></div>
+        <h2>전국 시군구 사물주소 부여격차 지도</h2>
+        <div class="sub">색이 진할수록 부여 유형이 적은 저부여 지역 · <b style="color:var(--brand-deep)">지역을 클릭하면 그 시도를 확대</b></div>
         <div id="map"></div>
         <div class="legend" id="legend"></div>
       </div>
@@ -196,30 +196,30 @@ footer ul{padding-left:17px; line-height:1.7}
   </div>
 </div>
 
-<div class="section-t">활용 유형 폭 (전국 vs 지역)</div>
+<div class="section-t">부여 유형 폭 (전국 vs 지역)</div>
 <div class="card">
-  <div class="sub" id="compare-sub">전국 사물주소 활용 유형 폭 — 전국 평균과 비교 (28종 만점)</div>
+  <div class="sub" id="compare-sub">전국 사물주소 부여 유형 폭 — 전국 평균과 비교 (28종 만점)</div>
   <div class="compare" id="compare"></div>
 </div>
 
 <div class="section-t">시군구별 전체 <span class="muted">— <span id="cnt"></span>곳</span></div>
 <div class="tools">
   <select id="f-sido"><option value="">전체 시도</option></select>
-  <select id="f-sort"><option value="rate">활용 유형 적은 순</option><option value="target">부여 많은 순</option><option value="gap">만명당 많은 순</option></select>
+  <select id="f-sort"><option value="rate">부여 유형 적은 순</option><option value="target">부여 많은 순</option><option value="gap">만명당 많은 순</option></select>
   <input id="f-q" placeholder="시군구 검색">
 </div>
 <div class="tscroll"><table>
-  <thead><tr><th>시군구</th><th>시도</th><th class="n">부여건수</th><th class="n">만명당</th><th class="n">인구</th><th class="n">활용유형</th></tr></thead>
+  <thead><tr><th>시군구</th><th>시도</th><th class="n">부여건수</th><th class="n">만명당</th><th class="n">인구</th><th class="n">부여유형</th></tr></thead>
   <tbody id="tbody"></tbody>
 </table></div>
 
-<div class="section-t">오픈API 데모 <span class="muted">— 활용격차 지표 API(안)</span></div>
+<div class="section-t">오픈API 데모 <span class="muted">— 커버리지 지표 API(안)</span></div>
 <div class="card">
-  <div class="sub">본 제안의 핵심인 <b>사물주소 활용지표 오픈API(안)</b>의 작동 데모입니다. 아래 응답은 이 시제품에 내장된 2026.6 전체분 실데이터로 즉시 생성됩니다.</div>
+  <div class="sub">본 제안의 핵심인 <b>사물주소 커버리지 오픈API(안)</b>의 작동 데모입니다. 아래 응답은 이 시제품에 내장된 2026.6 전체분 실데이터로 즉시 생성됩니다.</div>
   <div class="tools" style="margin:12px 0 10px">
     <select id="api-ep">
-      <option value="coverage">GET /api/v1/aoun/coverage — 시군구 활용지표</option>
-      <option value="gaps">GET /api/v1/aoun/gaps — 활용 사각지대 목록</option>
+      <option value="coverage">GET /api/v1/aoun/coverage — 시군구 커버리지 지표</option>
+      <option value="gaps">GET /api/v1/aoun/gaps — 저부여 지역 목록</option>
     </select>
     <select id="api-sgg"></select>
   </div>
@@ -231,14 +231,14 @@ footer ul{padding-left:17px; line-height:1.7}
 <footer>
   <h3>어떻게 계산했나</h3>
   <ul>
-    <li>활용 유형 = 그 시군구에 부여된 사물주소 종류 수 (28종 중: 버스정류장·자전거거치대·자동제세동기·무더위쉼터·민방위대피시설·둔치주차장·파크골프 등)</li>
-    <li>활용 사각지대 = 부여 유형이 10종 미만인 시군구 — 제도는 있으나 일부 유형만 활용</li>
+    <li>부여 유형 = 그 시군구에 부여된 사물주소 종류 수 (28종 중: 버스정류장·자전거거치대·자동제세동기·무더위쉼터·민방위대피시설·둔치주차장·파크골프 등)</li>
+    <li>저부여 지역 = 부여 유형이 10종 미만인 시군구 — 제도는 있으나 일부 유형만 부여</li>
     <li>지도는 시도 단위로 큰 흐름을, 표는 시군구 단위로 상세를 보여줍니다</li>
   </ul>
   <h3>데이터 출처</h3>
   <ul>
     <li>행정안전부 「도로명주소 사물주소 DB」 (2026.6, business.juso.go.kr) · 시군구 인구는 KOSIS</li>
-    <li>전국 <span id="src-t"></span>건 · 207개 시군구 자체 집계 (롤업 100% 매칭)</li>
+    <li>전국 <span id="src-t"></span>건 · 207개&nbsp;시군구 자체 집계 (롤업 100% 매칭)</li>
   </ul>
   <p style="margin-top:14px" class="muted">2026 주소정보 활용 대국민 공모전 출품 시제품 · 제작 김민수</p>
 </footer>
@@ -274,9 +274,9 @@ function agg(scope){
 function renderStats(scope){
   const a=agg(scope);
   $('stats').innerHTML = `
-    <div class="stat" data-kpi="rate" onclick="kpiDetail('rate')"><div class="v">${a.avgNt}<small>종</small></div><div class="l">${a.label} 평균 활용 유형<br>(28종 중)</div><div class="caret">자세히 ▾</div></div>
+    <div class="stat" data-kpi="rate" onclick="kpiDetail('rate')"><div class="v">${a.avgNt}<small>종</small></div><div class="l">${a.label} 평균 부여 유형<br>(28종 중)</div><div class="caret">자세히 ▾</div></div>
     <div class="stat" data-kpi="cnt" onclick="kpiDetail('cnt')"><div class="v">${fmt(a.cnt)}<small>건</small></div><div class="l">사물주소 부여 건수</div><div class="caret">자세히 ▾</div></div>
-    <div class="stat" data-kpi="blind" onclick="kpiDetail('blind')"><div class="v">${a.blindRows.length}<small>곳</small></div><div class="l">${a.scope?a.label+' ':''}활용 사각지대<br>(10종 미만 시군구)</div><div class="caret">자세히 ▾</div></div>
+    <div class="stat" data-kpi="blind" onclick="kpiDetail('blind')"><div class="v">${a.blindRows.length}<small>곳</small></div><div class="l">${a.scope?a.label+' ':''}저부여 지역<br>(10종 미만 시군구)</div><div class="caret">자세히 ▾</div></div>
     <div class="stat" data-kpi="pop" onclick="kpiDetail('pop')"><div class="v">${a.per10k}<small>/만명</small></div><div class="l">인구 만명당 사물주소</div><div class="caret">자세히 ▾</div></div>`;
 }
 renderStats(null);
@@ -289,7 +289,7 @@ const KPI={
     if(!selKey){const se=Object.entries(D.sido_rate).sort((x,y)=>x[1]-y[1]),lo=se[0],hi=se[se.length-1];
       extra=` 시도별로도 갈려서, 가장 다양한 ${hi[0]} <b>${hi[1]}종</b>과 가장 좁은 ${lo[0]} <b>${lo[1]}종</b>의 차이가 납니다.`;}
     else extra=` ${a.label} ${a.rows.length}개 시군구 기준입니다.`;
-    return `<h3>${a.label} 평균 활용 유형 ${a.avgNt}종 / 28</h3>
+    return `<h3>${a.label} 평균 부여 유형 ${a.avgNt}종 / 28</h3>
       <div class="d">사물주소는 버스정류장·자전거거치대·자동제세동기·무더위쉼터 등 28종까지 부여할 수 있습니다. ${a.label}은 평균 <b>${a.avgNt}종</b>을 실제로 활용합니다.${extra}</div>`;
   },
   cnt(){
@@ -299,15 +299,15 @@ const KPI={
   },
   blind(){
     const a=agg(selKey);
-    if(!a.blindRows.length) return `<h3>${a.label} 활용 사각지대 0곳</h3><div class="d">${a.label}에는 사물주소 활용 유형이 10종 미만인 시군구가 없습니다.</div>`;
-    return `<h3>${a.label} 활용 사각지대 ${a.blindRows.length}곳</h3>
-      <div class="d">사물주소 활용 유형이 10종 미만인 시군구입니다. 제도는 전국에 있지만 실제로는 일부 유형만 쓰고 있습니다.</div>
+    if(!a.blindRows.length) return `<h3>${a.label} 저부여 지역 0곳</h3><div class="d">${a.label}에는 사물주소 부여 유형이 10종 미만인 시군구가 없습니다.</div>`;
+    return `<h3>${a.label} 저부여 지역 ${a.blindRows.length}곳</h3>
+      <div class="d">사물주소 부여 유형이 10종 미만인 시군구입니다. 제도는 전국에 있지만 실제로는 일부 유형만 쓰고 있습니다.</div>
       <div class="kpi-pills">${a.blindRows.map(v=>`<span class="p">${v.sgg} ${v.nt}종</span>`).join('')}</div>`;
   },
   pop(){
     const a=agg(selKey);
     return `<h3>${a.label} 인구 만명당 ${a.per10k}건</h3>
-      <div class="d">인구 대비 사물주소 밀도입니다. 농촌은 인구가 적어 만명당 수치가 높게 나오는 경향이 있어, 실제 격차는 '활용 유형 수'가 더 정확히 보여줍니다.</div>`;
+      <div class="d">인구 대비 사물주소 밀도입니다. 농촌은 인구가 적어 만명당 수치가 높게 나오는 경향이 있어, 실제 격차는 '부여 유형 수'가 더 정확히 보여줍니다.</div>`;
   }
 };
 let kpiOn=null;
@@ -327,7 +327,7 @@ function kpiDetail(key){
 const F=D.geo_sgg;
 const eachPt=(c,cb)=>{if(c&&typeof c[0]==='number'){cb(c);return;}c.forEach(x=>eachPt(x,cb));};
 const col=r=>{const t=Math.max(0,Math.min(1,(24-r)/20));return RC[Math.min(4,Math.floor(t*4.999))];};
-const legendHTML='활용 많음 '+RC.map(c=>`<span class="sw" style="background:${c}"></span>`).join('')+' 활용 사각지대';
+const legendHTML='부여 많음 '+RC.map(c=>`<span class="sw" style="background:${c}"></span>`).join('')+' 저부여 지역';
 function drawMap(elId, keys, W, opt){
   opt=opt||{};
   const mode=opt.mode||'nation', labelMode=opt.labelMode||'top', selSgg=opt.selSgg||null, hlSido=opt.hlSido||null;
@@ -366,7 +366,7 @@ function drawMap(elId, keys, W, opt){
   }
   $(elId).innerHTML=`<svg viewBox="0 0 ${W} ${H.toFixed(0)}" role="img" aria-label="스포츠강좌이용권 수혜율 지도">${paths}${sido}${labels}</svg>`;
 }
-function sggTip(e,i){const f=D.geo_sgg[i];const x=$('tip');x.innerHTML=`<b>${f.n}</b> · ${f.s} · 활용 <b>${f.r}종</b>/28<br>사물주소 ${fmt(f.t)}건 · 만명당 ${f.rc}`;x.style.display='block';x.style.left=(e.clientX+13)+'px';x.style.top=(e.clientY+10)+'px';}
+function sggTip(e,i){const f=D.geo_sgg[i];const x=$('tip');x.innerHTML=`<b>${f.n}</b> · ${f.s} · 부여 유형 <b>${f.r}종</b>/28<br>사물주소 ${fmt(f.t)}건 · 만명당 ${f.rc}`;x.style.display='block';x.style.left=(e.clientX+13)+'px';x.style.top=(e.clientY+10)+'px';}
 function th(){$('tip').style.display='none';}
 
 /* ── 뷰 전환 (전국 ↔ 시도 drill-down) ── */
@@ -415,15 +415,15 @@ function renderRank(sido){
   ss.style.display='flex';
   const picked=pickedSgg?rows.find(v=>v.sgg===pickedSgg):null;
   if(picked){
-    ss.innerHTML=`<div><div class="v hl">${picked.nt}종</div><div class="l">${picked.sgg} 활용 유형</div></div>
+    ss.innerHTML=`<div><div class="v hl">${picked.nt}종</div><div class="l">${picked.sgg} 부여 유형</div></div>
       <div><div class="v">${fmt(picked.cnt)}</div><div class="l">부여 건수</div></div>
       <div><div class="v">${picked.per}</div><div class="l">만명당</div></div>`;
     $('rank-sub').innerHTML=`<b style="color:var(--brand-deep)">${picked.sgg}</b> 선택됨 · 28종 중 ${picked.nt}종 활용 · 지도에 강조`;
   } else {
-    ss.innerHTML=`<div><div class="v hl">${avgNt}종</div><div class="l">평균 활용 유형</div></div>
+    ss.innerHTML=`<div><div class="v hl">${avgNt}종</div><div class="l">평균 부여 유형</div></div>
       <div><div class="v">${fmt(cnt)}</div><div class="l">부여 건수</div></div>
       <div><div class="v">${rows.length}</div><div class="l">시군구</div></div>`;
-    $('rank-sub').textContent=`${rows.length}개 시군구 · 활용 유형 적은 순 · 항목이나 지도를 누르면 강조`;
+    $('rank-sub').textContent=`${rows.length}개 시군구 · 부여 유형 적은 순 · 항목이나 지도를 누르면 강조`;
   }
   rk.classList.add('scroll');
   const mx=Math.max(...rows.map(v=>v.nt),1);
@@ -434,7 +434,7 @@ function renderRank(sido){
     <div class="rate">${v.nt}종</div></div>`).join('');
 }
 
-/* ── 활용 유형 폭 (전국 vs 지역) ── */
+/* ── 부여 유형 폭 (전국 vs 지역) ── */
 function renderCompare(scope, sgg){
   const natl=agg(null);
   let val,ctx;
@@ -443,7 +443,7 @@ function renderCompare(scope, sgg){
   const row=(lab,v)=>`<div class="crow"><div class="clab"><b>${lab}</b><span>28종 중 ${v}종</span></div>
     <div class="ctrack"><i style="width:${v/28*100}%"></i><span class="pct">${v}종</span></div></div>`;
   $('compare').innerHTML=row('전국 평균',natl.avgNt)+row(ctx,val);
-  const cs=$('compare-sub'); if(cs) cs.textContent=`${ctx} 사물주소 활용 유형 폭 — 전국 평균과 비교 (28종 만점)`;
+  const cs=$('compare-sub'); if(cs) cs.textContent=`${ctx} 사물주소 부여 유형 폭 — 전국 평균과 비교 (28종 만점)`;
 }
 
 /* ── 테이블 (행 클릭 → 그 시도 drill-down + 구 선택) ── */
@@ -481,7 +481,7 @@ mapEl.addEventListener('mouseleave',()=>{mapEl.querySelectorAll('.shover').forEa
   const rows=[...D.sgg].sort((a,b)=>a.sgg.localeCompare(b.sgg,'ko'));
   sel.innerHTML=rows.map(r=>`<option value="${r.sgg}">${r.sgg} (${sidoKey(r.sido)})</option>`).join('');
   const def=rows.find(r=>r.sgg==='고창군'); if(def) sel.value='고창군';
-  const grade=nt=>nt<10?'사각지대(10종 미만)':(nt<D.meta.median_nt?'중앙값 미만':'양호');
+  const grade=nt=>nt<10?'저부여(10종 미만)':(nt<D.meta.median_nt?'중앙값 미만':'양호');
   function respond(){
     const isCov=ep.value==='coverage';
     sel.style.display=isCov?'':'none';
